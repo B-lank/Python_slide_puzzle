@@ -1,5 +1,6 @@
 from tkinter import *
-from slide_puzzle import createGrid
+import createGrid
+import ranking
 
 WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 600
@@ -69,7 +70,6 @@ class Intro:  # 인트로 클래스
         self.button_plus.grid(column=2, row=0)
 
         self.str_error = StringVar()
-        self.str_error.set("hello world")
         self.label_error = Label(self.frame_bottom, textvariable=self.str_error, width=45, height=1, justify=CENTER, fg='red', bg='white', font=("D2Coding", 9))
         self.label_error.pack(pady=10)
         self.button_start = Button(self.frame_bottom, text='start', width=8, height=2, font=("D2Coding", 20), command=self.game_start, state='disabled')  # 게임 시작 버튼 - 창 없애고 새 창 띄움
@@ -90,7 +90,8 @@ class Intro:  # 인트로 클래스
             self.button_register.configure(state='disabled')  # 회원가입 버튼 비활성화
             self.button_login.configure(state='disabled')  # 로그인 버튼 비활성화
             self.button_start.configure(state='normal')  # 게임 시작 버튼 활성화
-            self.str_error.set("Login Success")
+            self.rank, self.highest_score = ranking.get_rank(self.user_id)
+            self.str_error.set("Rank : %s  Highest score : %s" % (self.rank, self.highest_score))
         else:
             self.str_error.set("Login Fail")
 
@@ -161,7 +162,7 @@ class Register:  # 회원가입 클래스
 
         self.str_error = StringVar()
         self.str_error.set("hello")
-        self.label_error = Label(self.root, width=20, height=1, font=("D2Coding", 9), textvariable=self.str_error, justify=CENTER, fg='red', bg='white')
+        self.label_error = Label(self.root, width=30, height=1, font=("D2Coding", 9), textvariable=self.str_error, justify=CENTER, fg='red', bg='white')
         self.label_error.grid(column=0, row=1)
 
     def check_user(self):

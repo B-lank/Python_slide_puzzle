@@ -25,7 +25,7 @@ class mainGrid(Frame):
         self.newCell()
 
     def initGrid(self):
-        mainGrid = Frame(self, bg='white')
+        mainGrid = Frame(self, bg='black')
         mainGrid.grid(row = 0, column = 1)
         for i in range(self.cellSize):
             gridRow = []
