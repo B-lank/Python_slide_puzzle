@@ -1,5 +1,6 @@
 from tkinter import *
 from random import *
+from PIL import Image
 import cropp
 
 cellSize = 3  # Grid Size Set
@@ -36,11 +37,12 @@ class mainGrid(Frame):
                 cell = Frame(mainGrid, bg = 'white')
                 cell.grid(row = i, column = j, padx = 5, pady = 5)
                 t = Label(master = cell, text=self.puzzle[i][j], bg='white', font = 'Helvetica -8', width=cellWidth[self.cellSize], height=cellHeight[self.cellSize], relief = 'solid')
-                t.bind("<Button-1>", self.puzzle_change(i, j))
                 t.grid()
                 gridRow.append(t)
-
             self.gridCell.append(gridRow)
+        for i in range(self.cellSize):
+            for j in range(self.cellSize):
+                self.gridCell[i][j].bind("<Button-1>", self.puzzle_change(i, j))
 
     def makeCell(self): #Make Cell
         self.newMatrix = []
@@ -128,3 +130,4 @@ class mainGrid(Frame):
 
     def cropped_puzzle(self):  # 원본 사진을 받아와서 오리기
         self.cropped_puzzle = cropp.crop_image(self.cellSize)
+        self.cropped_puzzle[0][1].show()
