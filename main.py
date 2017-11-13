@@ -70,7 +70,7 @@ class Intro:  # 인트로 클래스
         self.button_plus.grid(column=2, row=0)
 
         self.str_error = StringVar()
-        self.label_error = Label(self.frame_bottom, textvariable=self.str_error, width=45, height=1, justify=CENTER, fg='red', bg='white', font=("D2Coding", 9))
+        self.label_error = Label(self.frame_bottom, textvariable=self.str_error, width=45, height=2, justify=CENTER, fg='red', bg='white', font=("D2Coding", 9))
         self.label_error.pack(pady=10)
         self.button_start = Button(self.frame_bottom, text='start', width=8, height=2, font=("D2Coding", 20), command=self.game_start, state='disabled')  # 게임 시작 버튼 - 창 없애고 새 창 띄움
         self.button_start.pack(pady=20)
@@ -91,7 +91,7 @@ class Intro:  # 인트로 클래스
             self.button_login.configure(state='disabled')  # 로그인 버튼 비활성화
             self.button_start.configure(state='normal')  # 게임 시작 버튼 활성화
             self.rank, self.highest_score = ranking.get_rank(self.user_id)
-            self.str_error.set("Rank : %s  Highest score : %s" % (self.rank, self.highest_score))
+            self.str_error.set("Rank : %s Highest score : %s" % (self.rank, self.highest_score))
         else:
             self.str_error.set("Login Fail")
 
@@ -120,7 +120,7 @@ class Intro:  # 인트로 클래스
 
     def game_start(self):  # 게임 시작 메소드
         self.root.destroy()  # 인트로 창 종료
-        window_game = createGrid.mainGrid(self.difficulty)  # 게임 객체 생성
+        window_game = createGrid.mainGrid(self.user_id, self.difficulty)  # 게임 객체 생성
 
 
 class Register:  # 회원가입 클래스

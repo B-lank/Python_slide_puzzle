@@ -1,25 +1,17 @@
-import sys
-def cuting(folder, Image, rowncol):
-    from folder import Image
-    #임의 폴더로부터 이미지 삽입
+from PIL import Image, ImageTk
 
-    oldfilename = "Beforecut"
-    row = rowncol
-    col = rowncol
-    #사용자가 입력한 곱하기값
 
-    with Image(filename=oldfilename) as image:
-        print("old : {0} , {1}".format(image.format, image.size))
-
-        cropHeight = int(image.height / row)
-        cropWidth = int(image.width / col)
-        #이미지를 잘라낸 조각의 가로세로 지정
-
-        for i in range(0, row):
-            for j in range(0, col):
-                left = j * cropWidth
-                right = (j + 1) * cropWidth
-                top = i * cropHeight
-                bottom = (i + 1) * cropHeight
-
-                #이미지 조각 크기맞추기
+def crop_image(difficulty):
+    img = Image.open("test.png")
+    blank = Image.open("blank.png")
+    original_width, original_height = img.size
+    cropped_img = []
+    for j in range(difficulty):
+        for i in range(difficulty):
+            area = (original_width/difficulty*i, original_height/difficulty*j, original_width/difficulty*(i+1), original_height/difficulty*(j+1))
+            if i == 0 and j == 0:
+                temp = ImageTk.PhotoImage(blank.crop(area))
+            else:
+                temp = ImageTk.PhotoImage(img.crop(area))
+            cropped_img.append(temp)
+    return cropped_img
