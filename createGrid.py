@@ -1,5 +1,6 @@
 from tkinter import *
 from random import *
+import cropp
 
 cellSize = 3  # Grid Size Set
 cellWidth = { 3 : 40, 4 : 30, 5 : 24 }
@@ -17,7 +18,7 @@ class mainGrid(Frame):
         self.master.title('Sliding Puzzle Game') #Game Title
         self.master.resizable(0, 0) #Disable Resizeable
         self.master.configure()
-        # self.puzzle_setting()  # 사이즈에 맞는 퍼즐 받아오기
+        self.cropped_puzzle()  # 사이즈에 맞는 퍼즐 받아오기
         self.gridCell = []
         self.initGrid()
         self.gameStart()
@@ -125,5 +126,5 @@ class mainGrid(Frame):
         self.puzzle[x1][y1] = self.puzzle[x2][y2]
         self.puzzle[x2][y2] = temp
 
-    def cropped_puzzle(self, orizinal_puzzle):  # 원본 사진을 받아와서 오리기
-        self.cropped_puzzle = crop(orizinal_puzzle)
+    def cropped_puzzle(self):  # 원본 사진을 받아와서 오리기
+        self.cropped_puzzle = cropp.crop_image(self.cellSize)
