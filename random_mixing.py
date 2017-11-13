@@ -2,7 +2,7 @@ import random
 
 
 def mix(puzzle, difficulty):
-    for _ in range(10000):
+    for _ in range(100000):
         i = random.randint(0, difficulty-1)
         j = random.randint(0, difficulty-1)
         if i == 0:  # 퍼즐 위쪽
