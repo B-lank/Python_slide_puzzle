@@ -118,5 +118,3 @@ class mainGrid(Frame):
 
     def cropped_puzzle(self):  # 원본 사진을 받아와서 오리기
         self.cropped_puzzle = crop.crop_image(self.cellSize)
-
-a = mainGrid('test', 3)
