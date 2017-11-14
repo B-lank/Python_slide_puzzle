@@ -4,16 +4,15 @@ import random_mixing
 import ranking
 
 cellSize = 3  # Grid Size Set
-cellWidth = { 3 : 40, 4 : 30, 5 : 24 }
-cellHeight = { 3 : 20, 4 : 15, 5 : 12 }
-
 
 class mainGrid(Frame):
 
-    def __init__(self, user_id, cellSize):
+    def __init__(self, user_id, user_rank, user_high, cellSize):
         Frame.__init__(self)
 
         self.user_id = user_id
+        self.user_rank = user_rank
+        self.user_highest_score = user_high
         self.cellSize = cellSize
         self.score = cellSize * 100
         self.puzzle = [[i*self.cellSize + j for j in range(self.cellSize)] for i in range(self.cellSize)]
@@ -29,8 +28,25 @@ class mainGrid(Frame):
         self.mainloop()
 
     def initGrid(self):
+        originGrid = Frame(self, bg='white')
+        originGrid.grid(row=0, column=0)
+        for i in range(self.cellSize):
+            for j in range(self.cellSize):
+                self.origincell = Frame(originGrid, bg='white')
+                self.origincell.grid(row=i, column=j, padx=5, pady=5)
+                self.origin = Label(master=self.origincell, text="1", bg='white',
+                                    image=self.cropped_puzzle[i * self.cellSize + j], font='Helvetica -7',
+                                    relief='solid')
+                self.origin.grid()
+
+        leftGrid = Frame(self, bg='black')
+        leftGrid.grid(row=0, column=1)
+        txt = "ID : %s\nRank : %s\nHighest score : %s\n" % (self.user_id, self.user_rank, self.user_highest_score)
+        user_information = Label(leftGrid, text=txt, font=("D2Coding", 20))
+        user_information.pack()
+
         mainGrid = Frame(self, bg='black')
-        mainGrid.grid(row = 0, column = 1)
+        mainGrid.grid(row = 0, column = 2)
         self.button_puzzle = []
         for i in range(self.cellSize):
             self.button_puzzle.append([])
@@ -107,8 +123,17 @@ class mainGrid(Frame):
                 self.button_puzzle[i][j].configure(image=self.cropped_puzzle[self.puzzle[i][j]])
         if self.puzzle == self.complete:
             self.master.destroy()
-            print(self.score)
+            window_finish = Tk()
+            label_gameover = Label(window_finish, text="Clear!\nscore : %s"%self.score, font=("D2Coding", 30), bg='white')
+            label_gameover.pack()
+            window_finish.mainloop()
             ranking.set_rank(self.user_id, self.score)
+        if self.score == 0:
+            self.master.destroy()
+            window_finish = Tk()
+            label_gameover = Label(window_finish, text="Game Over", font=("D2Coding", 30), bg='white')
+            label_gameover.pack()
+            window_finish.mainloop()
 
     def change(self, x1, y1, x2, y2):  # 바꿀 퍼즐 위치 받아서 서로 바꾸기
         temp = self.puzzle[x1][y1]

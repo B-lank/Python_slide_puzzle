@@ -14,7 +14,7 @@ def get_rank(user_id):
     for i in range(count):
         rank_id.append(rank[i].split('$')[0])
         rank_score.append(rank[i].split('$')[1])
-        ranking.append(rank[i].split('$')[2])
+        ranking.append(rank[i].split('$')[2].split('\n')[0])
     for i in range(count):
         if rank_id[i] == user_id:
             who = i+1
@@ -60,4 +60,3 @@ def set_rank(user_id, highest_score):
         for i in ranking:
             file.write("%s$%s$%s\n" % (rank_id[i], rank_score[i], count))
             count += 1
-
