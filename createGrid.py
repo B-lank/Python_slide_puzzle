@@ -21,7 +21,8 @@ class mainGrid(Frame):
         self.grid()
         self.master.title('Sliding Puzzle Game')  # Game Title
         self.master.resizable(0, 0)  # Disable Resizeable
-        self.master.configure()
+        self.master.configure(bg='white')
+        self.configure(bg='white')
         self.cropped_puzzle()  # 사이즈에 맞는 퍼즐 받아오기
         self.gridCell = []
         self.initGrid()
@@ -34,18 +35,23 @@ class mainGrid(Frame):
             for j in range(self.cellSize):
                 self.origincell = Frame(originGrid, bg='white')
                 self.origincell.grid(row=i, column=j, padx=5, pady=5)
-                self.origin = Label(master=self.origincell, text="1", bg='white',
-                                    image=self.cropped_puzzle[i * self.cellSize + j], font='Helvetica -7',
-                                    relief='solid')
+                self.origin = Label(master=self.origincell, text="1", bg='white', image=self.cropped_puzzle[i * self.cellSize + j], font='Helvetica -7', relief='solid')
                 self.origin.grid()
 
-        leftGrid = Frame(self, bg='black')
-        leftGrid.grid(row=0, column=1)
+        middleGrid = Frame(self, bg='white')
+        middleGrid.grid(row=0, column=1)
         txt = "ID : %s\nRank : %s\nHighest score : %s\n" % (self.user_id, self.user_rank, self.user_highest_score)
-        user_information = Label(leftGrid, text=txt, font=("D2Coding", 20))
-        user_information.pack()
+        label_information = Label(middleGrid, text=txt, font=("D2Coding", 20), bg='white')
+        label_information.pack()
+        self.present_score = StringVar()
+        label_score = Label(middleGrid, textvariable=self.present_score, font=("D2Coding", 20), bg='white')
+        self.present_score.set("Score : " + format(self.score))
+        label_score.pack()
+        self.finish = StringVar()
+        label_finish = Label(middleGrid, textvariable=self.finish, font=("D2Coding", 15), bg='white')
+        label_finish.pack()
 
-        mainGrid = Frame(self, bg='black')
+        mainGrid = Frame(self, bg='white')
         mainGrid.grid(row = 0, column = 2)
         self.button_puzzle = []
         for i in range(self.cellSize):
@@ -122,24 +128,25 @@ class mainGrid(Frame):
             for j in range(self.cellSize):
                 self.button_puzzle[i][j].configure(image=self.cropped_puzzle[self.puzzle[i][j]])
         if self.puzzle == self.complete:
-            self.master.destroy()
+            self.puzzle_complete()
             window_finish = Tk()
-            label_gameover = Label(window_finish, text="Clear!\nscore : %s"%self.score, font=("D2Coding", 30), bg='white')
-            label_gameover.pack()
-            window_finish.mainloop()
+            self.finish.set("Clear!")
             ranking.set_rank(self.user_id, self.score)
         if self.score == 0:
-            self.master.destroy()
-            window_finish = Tk()
-            label_gameover = Label(window_finish, text="Game Over", font=("D2Coding", 30), bg='white')
-            label_gameover.pack()
-            window_finish.mainloop()
+            self.puzzle_complete()
+            self.finish.set("Game Over")
+
+    def puzzle_complete(self):
+        for i in range(self.cellSize):
+            for j in range(self.cellSize):
+                self.button_puzzle[i][j].configure(state='disabled')
 
     def change(self, x1, y1, x2, y2):  # 바꿀 퍼즐 위치 받아서 서로 바꾸기
         temp = self.puzzle[x1][y1]
         self.puzzle[x1][y1] = self.puzzle[x2][y2]
         self.puzzle[x2][y2] = temp
         self.score -= 1
+        self.present_score.set("Score : " + format(self.score))
 
     def cropped_puzzle(self):  # 원본 사진을 받아와서 오리기
         self.cropped_puzzle = crop.crop_image(self.cellSize)

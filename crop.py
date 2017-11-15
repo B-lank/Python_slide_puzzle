@@ -15,9 +15,3 @@ def crop_image(difficulty):
                 temp = ImageTk.PhotoImage(img.crop(area))
             cropped_img.append(temp)
     return cropped_img
-
-def get_original_image():
-    img = Image.open("test.png")
-    original_width, original_height = img.size
-    copy = ImageTk.PhotoImage(img.resize((int(original_width / 2), int(original_height / 2)), Image.ANTIALIAS))
-    return copy

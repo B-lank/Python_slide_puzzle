@@ -37,15 +37,15 @@ def set_rank(user_id, highest_score):
     is_user = False
     for i in range(count):
         rank_id.append(rank[i].split('$')[0])
-        rank_score.append(rank[i].split('$')[1])
+        rank_score.append(int(rank[i].split('$')[1]))
     for i in range(count):
         if user_id == rank_id[i]:
-            if int(rank_score[i]) < highest_score:
-                rank_score[i] = format(highest_score)
+            if rank_score[i] < highest_score:
+                rank_score[i] = highest_score
             is_user = True
     if not is_user:
         rank_id.append(format(user_id))
-        rank_score.append(format(highest_score))
+        rank_score.append(highest_score)
         count += 1
     copy = []
     ranking = []
